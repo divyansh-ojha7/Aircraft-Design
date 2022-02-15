@@ -27,4 +27,6 @@ v_cruise = 222.626  # m/s taken from bae-146
 
 
 
+print(f'cl_max = {cl_max}')
+print(f'c_d_0 = {c_d_0}')
 
