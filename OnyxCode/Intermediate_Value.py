@@ -14,7 +14,7 @@ a = a0 / (1 + ((57.3*a0) / (math.pi * e * AR)))
 Cl_3D = [a * (x - alpha_l0) for x in alpha]
 Cd_3D = [c_d_0 + k*(x**2) for x in Cl_3D]
 
-print(f'\na0 = {a0}')
+print(f'a0 = {a0}')
 print(f'alpha_l0 = {alpha_l0} deg')
 print(f'a = {a}')
 print(f'k = {k}')
@@ -46,3 +46,11 @@ v_stall = math.sqrt((2*W) / (rho_0 * S_to * cl_max))
 print(f'm_takeoff = {m_takeoff} kg')
 print(f'm_landing = {m_landing} kg')
 print(f'v_stall = {v_stall} m/s')
+
+# Range and Endurance
+tsfc = 5.4*10**-5  # g/(N*s)
+endur_max = (1 / (tsfc*g)) * eff * math.log(m_takeoff / m_landing)
+range_max = (2 / g) * (math.sqrt(2 / (rho_0 * S_to))) * (1 / tsfc) * eff_12 * (math.sqrt(m_takeoff * g) - math.sqrt(m_landing * g))
+
+print(f'endur_max = {endur_max} s, or {endur_max / (60*60)} hours')
+print(f'range_max = {range_max} m')

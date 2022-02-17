@@ -74,7 +74,8 @@ S_average = ((m_takeoff + m_landing) / 2) / lfl_factor
 b = math.sqrt(AR*S_to)
 
 # Print results
-print(f'The design point is at ({lfl_factor}, {cruise_func[math.floor(lfl_factor)]}).\nThe ideal wing loading is {lfl_factor} m^2.')
-print(f'\nIdeal wing area is {S_to} m^2')
-print(f'\nIdeal wingspan is {b} m')
+print(f'The design point is at ({lfl_factor}, {cruise_func[math.floor(lfl_factor)]}).')
+print(f'The ideal wing loading is {lfl_factor} m^2.')
+print(f'Ideal wing area is {S_to} m^2')
+print(f'Ideal wingspan is {b} m')
 plt.show()
