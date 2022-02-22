@@ -24,7 +24,8 @@ e = 0.85
 n = 2  # number of engines
 theta_climb = 9.5  # estimation
 v_cruise = 222.626  # m/s taken from bae-146
-
+c_root = 7.6  # m root wing chord
+c_tip = 3.13  # m tip wing chord
 
 
 
