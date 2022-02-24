@@ -66,16 +66,16 @@ ax.set_ylim([0, 1])
 ax.set_xlim([0, 1500])
 
 # Wing area
-S_to = m_takeoff / lfl_factor  # Wing area using takeoff mass
+S = m_takeoff / lfl_factor  # Wing area using takeoff mass
 S_la = m_landing / lfl_factor  # Wing area using landing mass
 S_average = ((m_takeoff + m_landing) / 2) / lfl_factor
 
 # Wing span
-b = math.sqrt(AR*S_to)
+b = math.sqrt(AR * S)
 
 # Print results
-print(f'The design point is at ({lfl_factor}, {cruise_func[math.floor(lfl_factor)]}).')
-print(f'The ideal wing loading is {lfl_factor} m^2.')
-print(f'Ideal wing area is {S_to} m^2')
-print(f'Ideal wingspan is {b} m')
-plt.show()
+print(f'\nlfl_factor = {lfl_factor}, which is ideal wing loading')
+print(f'S = {S} m^2')
+print(f'b = {b} m')
+if show_graphs == 'Y':
+    plt.show()

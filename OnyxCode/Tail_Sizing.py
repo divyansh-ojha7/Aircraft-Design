@@ -15,10 +15,10 @@ SM = 0.05  # stability margin, 0.1 is a little better than weakly stable, but we
 x_np = (0.25 + ((1+(2/AR))/(1+(2/AR_h)))*(1-(4/(AR+2)))*C_HT)*c_ave  # position of neutral point (m)
 x_cg = x_np - (c_ave*SM)  # position of center of gravity (m), theoretical, not including weight of tanks
 
-S_HT = (C_HT * c_ave * S_to) / L_HT  # m^2 estimated horizontal tail wing area
-S_VT = (C_VT * b * S_to) / L_VT  # m^2 estimated vertical tail wing area
+S_HT = (C_HT * c_ave * S) / L_HT  # m^2 estimated horizontal tail wing area
+S_VT = (C_VT * b * S) / L_VT  # m^2 estimated vertical tail wing area
 
 print(f'S_HT = {S_HT} m^2')
-print(f'S_VT = {C_VT} m^2')
+print(f'S_VT = {S_VT} m^2')
 print(f'x_np = {x_np} m')
 print(f'x_cg = {x_cg} m')

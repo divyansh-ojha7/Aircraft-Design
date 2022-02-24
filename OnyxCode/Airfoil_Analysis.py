@@ -10,7 +10,11 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-graphs = 'Y'
+print('########################################')
+print('      RUNNING AIRCRAFT ANALYSIS         ')
+print('########################################')
+
+show_graphs = 'N'
 
 df = pd.read_csv('4417_EditedData.csv')
 alpha = df["alpha"]
@@ -29,7 +33,7 @@ plt.xlabel('Alpha')
 plt.ylabel('$C_L$')
 plt.legend()
 ax = plt.gca()
-if graphs == 'Y':
+if show_graphs == 'Y':
     plt.show()
 
 
@@ -40,7 +44,7 @@ plt.xlabel('$C_L$')
 plt.ylabel('$C_D$')
 plt.title('$C_L$ vs $C_D$')
 plt.legend()
-if graphs == 'Y':
+if show_graphs == 'Y':
     plt.show()
 
 
