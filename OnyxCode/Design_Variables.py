@@ -28,6 +28,3 @@ c_root = 7.6  # m root wing chord
 c_tip = 3.13  # m tip wing chord
 L_HT = 34.59  # m length from estimated C.G. to 1/4 chord of horiz. tail
 L_VT = 28.55  # m length from estimated C.G. to 1/4 chord of vert. tail
-
-
-

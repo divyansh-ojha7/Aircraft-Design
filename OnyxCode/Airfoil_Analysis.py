@@ -46,6 +46,3 @@ plt.title('$C_L$ vs $C_D$')
 plt.legend()
 if show_graphs == 'Y':
     plt.show()
-
-
-
