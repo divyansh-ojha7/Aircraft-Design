@@ -14,6 +14,8 @@ a = a0 / (1 + ((57.3*a0) / (math.pi * e * AR)))
 Cl_3D = [a * (x - alpha_l0) for x in alpha]
 Cd_3D = [c_d_0 + k*(x**2) for x in Cl_3D]
 
+L_wrt_alpha = [q_inf * S * (a * (x - alpha_l0)) for x in alpha]
+
 print(f'a0 = {a0}')
 print(f'alpha_l0 = {alpha_l0} deg')
 print(f'a = {a}')
@@ -30,6 +32,19 @@ plt.title('Alpha vs $C_L$ (3D) and $C_l$ (2D)')
 plt.legend()
 if show_graphs == 'Y':
     plt.show()
+
+
+plt.plot(alpha,L_wrt_alpha,label='Lift')
+plt.axhline(y = 0, linestyle='--', label='Lift = 0', color='red', linewidth=1)
+plt.axvline(x = alpha_l0, linestyle='--', label='Alpha at Lift = 0', color='purple', linewidth=1)
+plt.text(-6.5, (0.075*(10**7)), '(0.560413,0)', fontsize = 10)
+plt.xlabel('Alpha [deg]')
+plt.ylabel('Lift [N]')
+plt.title('Alpha vs Lift')
+plt.legend()
+if show_graphs == 'Y':
+    plt.show()
+
 
 # Efficiency Ratios
 
@@ -50,6 +65,8 @@ print(f'v_stall = {v_stall} m/s')
 print(f'eff_32 = {eff_32}')
 print(f'eff = {eff}')
 print(f'eff_12 = {eff_12}')
+print(f'v_max_end = {v_max_end} m/s')
+print(f'v_max_range = {v_max_range} m/s')
 
 # Range and Endurance
 tsfc = 1.06657206*10**-5  # kg/(N*s)
