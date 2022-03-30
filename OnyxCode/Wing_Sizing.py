@@ -38,32 +38,34 @@ k = 1 / (math.pi * e * AR)
 cruise_func = [(((q_inf * c_d_0) / x) + ((k / q_inf) * x)) for x in m_mto_s_w]
 
 # Plot
-plt.plot(m_mto_s_w, tkff_fld_func, label='Takeoff', color='orange')
-plt.plot(m_mto_s_w, cruise_func, label='Cruise', color='black')
+if show_graphs == 'Y':
+    plt.plot(m_mto_s_w, tkff_fld_func, label='Takeoff', color='orange')
+    plt.plot(m_mto_s_w, cruise_func, label='Cruise', color='black')
 
-plt.axvline(x=lfl_factor, label='Landing', color='green')
-plt.axhline(y=clmb_factor, label='Climb', color='purple')
-plt.axhline(y=msd_climb_factor, label='Missed Climb', color='#25C2DE')
+    plt.axvline(x=lfl_factor, label='Landing', color='green')
+    plt.axhline(y=clmb_factor, label='Climb', color='purple')
+    plt.axhline(y=msd_climb_factor, label='Missed Climb', color='#25C2DE')
 
-# Find where they intersect
-y_int = lfl_factor
-#for val in range(1, 2000):
-    #if lfl_factor - cruise_func[val] < 0.00001:
-        #y_int = val
+    # Find where they intersect
+    y_int = lfl_factor
+    #for val in range(1, 2000):
+        #if lfl_factor - cruise_func[val] < 0.00001:
+            #y_int = val
 
-plt.plot(lfl_factor, cruise_func[math.floor(lfl_factor)], 'o', markersize=10, color='red', label='Design Point')
+    plt.plot(lfl_factor, cruise_func[math.floor(lfl_factor)], 'o', markersize=10, color='red', label='Design Point')
 
-# Formatting
-plt.title('Wing Loading vs. Thrust to Weight Ratio')
-plt.xlabel('$\dfrac{W}{S}$ $\: (\dfrac{kg}{m^2})$')
-# $\dfrac{m_{MTO}}{S_W}$
-plt.ylabel('$\dfrac{T}{W}$ $\: (\dfrac{N}{kg})$')
-# $\dfrac{T_{TO}}{m_{MTO}*g}$
-plt.legend(framealpha=1, loc='upper right')
+    # Formatting
+    plt.title('Wing Loading vs. Thrust to Weight Ratio')
+    plt.xlabel('$\dfrac{W}{S}$ $\: (\dfrac{kg}{m^2})$')
+    # $\dfrac{m_{MTO}}{S_W}$
+    plt.ylabel('$\dfrac{T}{W}$ $\: (\dfrac{N}{kg})$')
+    # $\dfrac{T_{TO}}{m_{MTO}*g}$
+    plt.legend(framealpha=1, loc='upper right')
 
-ax = plt.gca()
-ax.set_ylim([0, 1])
-ax.set_xlim([0, 1500])
+    ax = plt.gca()
+    ax.set_ylim([0, 1])
+    ax.set_xlim([0, 1500])
+    plt.show()
 
 # Wing area
 S = m_takeoff / lfl_factor  # Wing area using takeoff mass
@@ -77,5 +79,3 @@ b = math.sqrt(AR * S)
 print(f'\nlfl_factor = {lfl_factor}, which is ideal wing loading')
 print(f'S = {S} m^2')
 print(f'b = {b} m')
-if show_graphs == 'Y':
-    plt.show()
