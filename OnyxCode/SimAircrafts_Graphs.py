@@ -9,7 +9,7 @@ from Drag_Buildup import *
 # Format is [MTOW [lbs], AR]
 BAE_146 = [84000, 8.98] # British Aerospace 146
 LHC130 = [175000, 10.1] # Lockheed HC-130
-CL215 = [43499 ,8.15] # Canadair CL-215
+CL215 = [43499, 8.15] # Canadair CL-215
 DC10 = [430000, 6.91] # Douglas DC-10
 B747 = [735000, 8.4] # Boeing 747
 GS2T = [26147, 10.863] # Grumman S2T Airtanker
