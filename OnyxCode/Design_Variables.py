@@ -14,7 +14,7 @@ cl_to = Cl[35]  # cl at takeoff, at whatever angle the wing is on the ground, es
 c_d_0 = min(Cd)
 s_lfl = 1470  # landing field length,
 s_tofl = 2336  # takeoff field length,
-m_takeoff = 76505.3643128  # takeoff mass
+m_takeoff = 87020.04431  # takeoff mass
 # 39846.493059 kg (RETARDANT) + 26286.7 kg (EMPTY WEIGHT) + 10372.1712538 kg (FUEL)
 m_landing = m_takeoff*0.82  # landing mass, 82% of takeoff mass
 c_d_flap = 0.02  # estimation
