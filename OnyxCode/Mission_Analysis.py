@@ -12,6 +12,7 @@ print(' ')
 m_zero_ret = 36801.38 + 10372.1712538  # mass with no retardant, 36801.38 kg (EMPTY WEIGHT) + 10372.1712538 kg (FUEL)
 W_zero_ret = m_zero_ret * 9.81 # weight with no retardant
 
+starting_fuel = 10372.1712538  # kg of starting fuel
 cruise_alt = 5181.6  # cruise altitude, m, used to be 6096
 airport_alt = 39  # LAX altitude, m
 a1 = -6.5e-3  # Temperature lapse rate below 11 km, in deg K/m
@@ -83,11 +84,12 @@ print(f'ROC_average = {ROC_average} m/s')
 print(f'd_climb = {d_climb / 1000} km')
 print(f't_climb = {t_climb / 60} min')
 print(f'm_fuelburn_climb = {m_fuelburn_climb} kg')
+print(f'v_cruise = {v_cruise} m/s')
 
 # CRUISE ANALYSIS
 m0_cruise = m_zero_ret - m_fuelburn_climb  # current amount of fuel at beginning of cruise, kg
 W0_cruise = m0_cruise*9.81
-d_cruise = 5556000  # objective cruise distance, m. Equal to 3000 n mi
+d_cruise = 3546967  # objective cruise distance, m.
 W_cruise_final = (((-d_cruise*(g/2)*tsfc) / (math.sqrt(2/(rhocruise*S))*eff_12)) + math.sqrt(W0_cruise))**2
 # weight of aircraft after cruise
 m_cruise_final = W_cruise_final / 9.81  # mass of aircraft after cruise
@@ -97,3 +99,41 @@ m_fuelburn_cruise = W_fuelburn_cruise / 9.81
 
 print(f'm_fuelburn_cruise = {m_fuelburn_cruise} kg')
 
+#  DESCENT ANALYSIS
+
+theta_approach = 3  # 3 degree slope for descent
+v_approach = 1.3*v_stall  # approach velocity, m/s
+v_loiter = math.sqrt((2/rhocruise)*(W_cruise_final/S)*math.sqrt(k/c_d_0))
+
+T_req_top_descent = 0.5*rhocruise*(v_loiter**2)*S*c_d_0 + (k*W_cruise_final)/(0.5*rhocruise*(v_loiter**2)*S)
+P_req_top_descent = T_req_top_descent*v_loiter
+
+T_req_approach = 0.5*rhocruise*(v_approach**2)*S*c_d_0 + (k*W_cruise_final)/(0.5*rhocruise*(v_approach**2)*S)
+P_req_approach = T_req_approach*v_loiter
+
+T1 = W_cruise_final*math.sin(math.radians(theta_approach)) + T_req_top_descent
+T2 = W_cruise_final*math.sin(math.radians(theta_approach)) + T_req_approach
+fuel_flowrate_descent = ((T1+T2)/2)*tsfc
+
+t_descent = cruise_alt / (v_loiter*math.sin(math.radians(theta_approach)))
+m_fuelburn_descent = fuel_flowrate_descent*t_descent
+
+d_descent = cruise_alt / math.tan(math.radians(3))  # distance of descent on ground, m
+
+print(f'fuel_flowrate_descent = {fuel_flowrate_descent} kg')
+print(f'v_loiter = {v_loiter} m/s')
+print(f'd_descent = {d_descent / 1000} km')
+print(f't_descent = {t_descent / 60} min')
+print(f'm_fuelburn_descent = {m_fuelburn_descent} kg')
+
+m_fuelburn_total_ferry = m_fuelburn_climb + m_fuelburn_cruise + m_fuelburn_descent
+
+print(f'm_fuelburn_total_ferry = {m_fuelburn_total_ferry} kg for a ferry mission of {(d_climb + d_cruise + d_descent) / 1000} km')
+
+fuel_remaining = starting_fuel - m_fuelburn_total_ferry
+print(f'fuel_remaining = {fuel_remaining: .8g} kg, which is {(fuel_remaining / starting_fuel)*100: .8g}% of starting fuel')
+
+# Notes
+# 5398900 m cruise distance for 3000 n mi total ferry distance
+# 3546967 m cruise distance for 2000 n mi total ferry distance
+# 1694699 m cruise distance for 1000 n mi total ferry distance
