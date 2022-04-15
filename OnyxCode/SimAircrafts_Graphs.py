@@ -49,7 +49,8 @@ plt.xlabel('MTOGW [lbs]')
 plt.xlim(-400000,1000000)
 plt.xticks([0, 200000, 400000, 600000, 800000, 1000000])
 plt.grid()
-plt.show()
+if show_graphs == 'Y':
+    plt.show()
 
 
 
@@ -96,7 +97,8 @@ plt.ylabel('MTOGW [lb]')
 plt.yticks([0, 200000, 400000, 600000, 800000])
 plt.xticks([0, 40, 80, 120, 160])
 plt.grid()
-plt.show()
+if show_graphs == 'Y':
+    plt.show()
 
 # Format is [MTOGW, Retardant Capacity [Gallons]]
 
@@ -143,7 +145,8 @@ plt.grid()
 plt.title('MTOGW vs Retardant Capacity')
 plt.xlabel('MTOGW [lb]')
 plt.ylabel('Retardant Capacity [gal]')
-plt.show()
+if show_graphs == 'Y':
+    plt.show()
 
 
 
@@ -194,7 +197,8 @@ plt.yticks([0, 200000, 400000, 600000, 800000, 1000000])
 plt.title('Empty Weight vs. MTOGW')
 plt.xlabel('Empty Weight [lb]')
 plt.ylabel('MTOGW [lb]')
-plt.show()
+if show_graphs == 'Y':
+    plt.show()
 
 
 
@@ -244,4 +248,5 @@ plt.xticks([0, 200000, 400000, 600000, 800000, 1000000])
 plt.title('MTOGW vs Fuel Capacity')
 plt.xlabel('MTOGW [lb]')
 plt.ylabel('Fuel Capacity [gal]')
-plt.show()
+if show_graphs == 'Y':
+    plt.show()
