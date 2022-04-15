@@ -15,7 +15,7 @@ c_d_0 = min(Cd)
 s_lfl = 1470  # landing field length,
 s_tofl = 2336  # takeoff field length,
 m_takeoff = 87020.04431  # takeoff mass
-# 39846.493059 kg (RETARDANT) + 26286.7 kg (EMPTY WEIGHT) + 10372.1712538 kg (FUEL)
+# 39846.493059 kg (RETARDANT) + 36801.38 kg (EMPTY WEIGHT) + 10372.1712538 kg (FUEL)
 m_landing = m_takeoff*0.82  # landing mass, 82% of takeoff mass
 c_d_flap = 0.02  # estimation
 c_d_lgear = 0.015  # estimation
