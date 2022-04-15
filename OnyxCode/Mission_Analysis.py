@@ -81,4 +81,10 @@ print(f't_climb = {t_climb / 60} min')
 print(f'm_fuelburn_climb = {m_fuelburn_climb} kg')
 
 # CRUISE ANALYSIS
+m0_cruise = m_takeoff - m_fuelburn_climb  # current amount of fuel at beginning of cruise, kg
 
+d_cruise = 5556000  # objective cruise distance, m. Equal to 3000 n mi
+W_fuelburn_cruise = ((d_cruise / ((2/g)*math.sqrt(2/(rhocruise*S))*(1/tsfc)*eff_12))-math.sqrt(m0_cruise*9.81))**2
+# weight of fuel burned during cruise, kg
+m_fuelburn_cruise = W_fuelburn_cruise / 9.81
+print(f'm_fuelburn_cruise = {m_fuelburn_cruise} kg')

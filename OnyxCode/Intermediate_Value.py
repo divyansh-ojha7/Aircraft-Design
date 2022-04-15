@@ -66,7 +66,7 @@ print(f'v_max_end = {v_max_end} m/s')
 print(f'v_max_range = {v_max_range} m/s')
 
 # Range and Endurance
-tsfc = 1.06657206*10**-5  # kg/(N*s)
+tsfc = 1.06657206*(10**-5) # kg/(N*s)
 endur_max = (1 / (tsfc*g)) * eff * math.log(m_takeoff / m_landing)
 range_max = (2 / g) * (math.sqrt(2 / (rho_0 * S))) * (1 / tsfc) * eff_12 * (math.sqrt(m_takeoff * g) - math.sqrt(m_landing * g))
 
