@@ -137,3 +137,136 @@ print(f'fuel_remaining = {fuel_remaining: .8g} kg, which is {(fuel_remaining / s
 # 5398900 m cruise distance for 3000 n mi total ferry distance
 # 3546967 m cruise distance for 2000 n mi total ferry distance
 # 1694699 m cruise distance for 1000 n mi total ferry distance
+
+
+# DESIGN MISSION
+m_retardant = 39846.493059  # kg of retardant
+n_drops = 4  # number of drops
+drop_amount = m_retardant / n_drops  # amount of retardant dropped per drop, kg
+print(f'n_drops = {n_drops}')
+
+# Climb Analysis
+Z_fact_airport_des = 1 + math.sqrt(1 + (3 / ((eff ** 2) * ((Ta_airport / W) ** 2))))
+ROC_max_airport_des = (((W/S) * Z_fact_airport_des) / (3 * rho_airport * c_d_0)) ** 0.5 * ((Ta_airport / W) ** 1.5) * (1 - (Z_fact_airport_des / 6) - (3 / (2 * ((Ta_airport / W) ** 2) * (eff ** 2) * Z_fact_airport_des)))
+Ta_cruise = Ta_airport*(rhocruise / rho_airport)  # Thrust available, max (cruise altitude) (N)
+Z_fact_cruise_des = 1 + math.sqrt(1 + (3 / ((eff ** 2) * ((Ta_cruise / W) ** 2))))
+ROC_max_cruise_des = (((W/S) * Z_fact_cruise_des) / (3 * rhocruise * c_d_0)) ** 0.5 * ((Ta_cruise / W) ** 1.5) * (1 - (Z_fact_cruise_des / 6) - (3 / (2 * ((Ta_cruise / W) ** 2) * (eff ** 2) * Z_fact_cruise_des)))
+
+ROC_average_des = (ROC_max_airport_des + ROC_max_cruise_des) / 2
+
+d_climb_des = (cruise_alt-airport_alt) / (math.tan(math.radians(takeoffclimbangle)))  # ground distance of climb, m
+t_climb_des = d_climb_des / ROC_average_des  # time climb takes, s
+
+m_fuelburn_climb_des = tsfc * ((Ta_airport + Ta_cruise) / 2) * t_climb_des  # mass of fuel used in climb, kg
+
+print(f'm_fuelburn_climb_des = {m_fuelburn_climb_des} kg')
+
+# Cruise Analysis
+m0_cruise_des = m_takeoff - m_fuelburn_climb_des  # current amount of fuel at beginning of cruise, kg
+W0_cruise_des = m0_cruise_des*9.81
+d_cruise_des = 740800  # objective cruise distance, m. 400 Nautical Miles
+W_cruise_final_des = (((-d_cruise_des*(g/2)*tsfc) / (math.sqrt(2/(rhocruise*S))*eff_12)) + math.sqrt(W0_cruise_des))**2
+# weight of aircraft after cruise
+m_cruise_final_des = W_cruise_final_des / 9.81  # mass of aircraft after cruise
+
+W_fuelburn_cruise_des = W0_cruise_des - W_cruise_final_des
+m_fuelburn_cruise_des = W_fuelburn_cruise_des / 9.81
+
+print(f'm_fuelburn_cruise_des = {m_fuelburn_cruise_des} kg')
+
+# Descent Analysis
+
+v_loiter_des = math.sqrt((2/rhocruise)*(W_cruise_final_des/S)*math.sqrt(k/c_d_0))
+
+T_req_top_descent_des = 0.5*rhocruise*(v_loiter_des**2)*S*c_d_0 + (k*W_cruise_final_des)/(0.5*rhocruise*(v_loiter_des**2)*S)
+
+T_req_approach_des = 0.5*rhocruise*(v_approach**2)*S*c_d_0 + (k*W_cruise_final_des)/(0.5*rhocruise*(v_approach**2)*S)
+
+T1_des = W_cruise_final_des*math.sin(math.radians(theta_approach)) + T_req_top_descent_des
+T2_des = W_cruise_final_des*math.sin(math.radians(theta_approach)) + T_req_approach_des
+fuel_flowrate_descent_des = ((T1_des+T2_des)/2)*tsfc
+
+t_descent = cruise_alt / (v_loiter*math.sin(math.radians(theta_approach)))
+m_fuelburn_descent_des = fuel_flowrate_descent_des*t_descent
+
+print(f'm_fuelburn_descent_des = {m_fuelburn_descent_des} kg')
+
+# Retardant Dropping Phase
+m_descent_final_des = m_takeoff - m_fuelburn_climb_des - m_fuelburn_cruise_des - m_fuelburn_descent_des
+W_descent_final_des = m_descent_final_des * 9.81
+
+m_current = m_descent_final_des
+for i in range(1, n_drops+1):
+    m_after_drop = m_current - drop_amount
+    W_after_drop = m_after_drop * 9.81
+
+    # Quick Loiter
+    d_loiter = 1852  # objective cruise distance, m. 1 Nautical Mile
+    W_loiter_final = (((-d_loiter * (g / 2) * tsfc) / (math.sqrt(2 / (rhocruise * S)) * eff_12)) + math.sqrt(
+        W_after_drop)) ** 2
+    # weight of aircraft after cruise
+    m_loiter_final = W_loiter_final / 9.81  # mass of aircraft after cruise
+
+    W_fuelburn_loiter = W_after_drop - W_loiter_final
+    m_fuelburn_loiter = W_fuelburn_loiter / 9.81
+
+    m_current = m_loiter_final - m_fuelburn_loiter
+
+m_after_all_drops = m_current
+W_after_all_drops = m_current * 9.81
+
+m_fuelburn_drops = m_descent_final_des - m_after_all_drops - m_retardant
+
+print(f'm_fuelburn_drops = {m_fuelburn_drops} kg')
+
+# Climb analysis
+Z_fact_after_drops = 1 + math.sqrt(1 + (3 / ((eff ** 2) * ((Ta_airport / W_after_all_drops) ** 2))))
+ROC_max_after_drops = (((W_after_all_drops/S) * Z_fact_after_drops) / (3 * rho_airport * c_d_0)) ** 0.5 * ((Ta_airport / W_after_all_drops) ** 1.5) * (1 - (Z_fact_after_drops / 6) - (3 / (2 * ((Ta_airport / W_after_all_drops) ** 2) * (eff ** 2) * Z_fact_after_drops)))
+Ta_cruise = Ta_airport*(rhocruise / rho_airport)  # Thrust available, max (cruise altitude) (N)
+Z_fact_cruise_afterdrops = 1 + math.sqrt(1 + (3 / ((eff ** 2) * ((Ta_cruise / W_after_all_drops) ** 2))))
+ROC_max_cruise_afterdrops = (((W_after_all_drops/S) * Z_fact_cruise_afterdrops) / (3 * rhocruise * c_d_0)) ** 0.5 * ((Ta_cruise / W_after_all_drops) ** 1.5) * (1 - (Z_fact_cruise_afterdrops / 6) - (3 / (2 * ((Ta_cruise / W_after_all_drops) ** 2) * (eff ** 2) * Z_fact_cruise_afterdrops)))
+
+ROC_average_afterdrops = (ROC_max_after_drops + ROC_max_cruise_afterdrops) / 2
+
+d_climb_afterdrops = (cruise_alt-airport_alt) / (math.tan(math.radians(takeoffclimbangle)))  # ground distance of climb, m
+t_climb_afterdrops = d_climb_afterdrops / ROC_average_afterdrops  # time climb takes, s
+
+m_fuelburn_climb_afterdrops = tsfc * ((Ta_airport + Ta_cruise) / 2) * t_climb_afterdrops  # mass of fuel used in climb, kg
+
+print(f'm_fuelburn_climb_afterdrops = {m_fuelburn_climb_afterdrops} kg')
+
+# Cruise Analysis
+m0_cruise_afterdrops = m_after_all_drops - m_fuelburn_climb_afterdrops  # current amount of fuel at beginning of cruise, kg
+W0_cruise_afterdrops = m0_cruise_afterdrops*9.81
+d_cruise_afterdrops = 740800  # objective cruise distance, m. 400 Nautical Miles
+W_cruise_final_afterdrops = (((-d_cruise_afterdrops*(g/2)*tsfc) / (math.sqrt(2/(rhocruise*S))*eff_12)) + math.sqrt(W0_cruise_afterdrops))**2
+# weight of aircraft after cruise
+m_cruise_final_afterdrops = W_cruise_final_afterdrops / 9.81  # mass of aircraft after cruise
+
+W_fuelburn_cruise_afterdrops = W0_cruise_afterdrops - W_cruise_final_afterdrops
+m_fuelburn_cruise_afterdrops = W_fuelburn_cruise_afterdrops / 9.81
+
+print(f'm_fuelburn_cruise_afterdrops = {m_fuelburn_cruise_afterdrops} kg')
+
+# Descent Analysis
+v_loiter_afterdrops = math.sqrt((2/rhocruise)*(W_cruise_final_afterdrops/S)*math.sqrt(k/c_d_0))
+
+T_req_top_descent_afterdrops = 0.5*rhocruise*(v_loiter_afterdrops**2)*S*c_d_0 + (k*W_cruise_final_afterdrops)/(0.5*rhocruise*(v_loiter_afterdrops**2)*S)
+
+T_req_approach_afterdrops = 0.5*rhocruise*(v_approach**2)*S*c_d_0 + (k*W_cruise_final_afterdrops)/(0.5*rhocruise*(v_approach**2)*S)
+
+T1_afterdrops = W_cruise_final_afterdrops*math.sin(math.radians(theta_approach)) + T_req_top_descent_afterdrops
+T2_afterdrops = W_cruise_final_des*math.sin(math.radians(theta_approach)) + T_req_approach_afterdrops
+fuel_flowrate_descent_afterdrops = ((T1_afterdrops+T2_afterdrops)/2)*tsfc
+
+t_descent = cruise_alt / (v_loiter*math.sin(math.radians(theta_approach)))
+m_fuelburn_descent_afterdrops = fuel_flowrate_descent_afterdrops*t_descent
+
+print(f'm_fuelburn_descent_afterdrops = {m_fuelburn_descent_afterdrops} kg')
+
+# SUMMING TOTAL AND DATA ANALYSIS FOR DESIGN MISSION
+print(f'n_drops = {n_drops}')
+total_fuelburn_des = m_fuelburn_climb_des + m_fuelburn_cruise_des + m_fuelburn_descent_des + m_fuelburn_drops + m_fuelburn_climb_afterdrops + m_fuelburn_cruise_afterdrops
+print(f'total_fuelburn_des = {total_fuelburn_des} kg')
+print(f'Fuel remaining after design mission with {n_drops} drops: {starting_fuel - total_fuelburn_des} kg')
+print(f'Percent fuel remaining after design mission with {n_drops} drops: {((starting_fuel - total_fuelburn_des) / starting_fuel)*100}%')
