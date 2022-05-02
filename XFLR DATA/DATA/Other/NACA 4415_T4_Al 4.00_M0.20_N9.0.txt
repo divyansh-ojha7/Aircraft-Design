@@ -1,0 +1,14 @@
+xflr5 v6.47
+
+ Calculated polar for: NACA 4415
+
+ 1 1 Reynolds number fixed          Mach number fixed         
+
+ xtrf =   1.000 (top)        1.000 (bottom)
+ Mach =   0.200     Re =     0.100 e 6     Ncrit =   9.000
+
+  alpha     Re      CL        CD       CDp       Cm    Top Xtr Bot Xtr   Cpmin    Chinge     XCp    
+ ------- -------- -------- --------- --------- -------- ------- ------- -------- --------- ---------
+   4.000 10000000   0.9686   0.00585   0.00174  -0.1087  0.3104  0.5669  -1.4015   0.0000   0.3549
+
+

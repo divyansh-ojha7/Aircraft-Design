@@ -1,0 +1,14 @@
+xflr5 v6.47
+
+ Calculated polar for: TsAGI R-3a (12%)
+
+ 1 1 Reynolds number fixed          Mach number fixed         
+
+ xtrf =   1.000 (top)        1.000 (bottom)
+ Mach =   0.200     Re =     0.100 e 6     Ncrit =   9.000
+
+  alpha     Re      CL        CD       CDp       Cm    Top Xtr Bot Xtr   Cpmin    Chinge     XCp    
+ ------- -------- -------- --------- --------- -------- ------- ------- -------- --------- ---------
+ -15.000 10000000  -1.4068   0.02825   0.02641  -0.0535  1.0045  0.0066  -20.7120   0.0000   0.1953
+
+

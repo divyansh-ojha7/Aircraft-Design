@@ -15,7 +15,7 @@ print('########################################')
 print('      RUNNING AIRCRAFT ANALYSIS         ')
 print('########################################')
 
-show_graphs = 'N'
+show_graphs = 'Y'
 
 df = pd.read_csv('4417_EditedData.csv')
 alpha = df["alpha"]
